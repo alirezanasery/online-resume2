@@ -1,30 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // تنظیمات بهینه‌سازی performance
+  // تنظیمات پایه
   compress: true,
   poweredByHeader: false,
-  generateEtags: false,
   
   // تنظیمات images
   images: {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // تنظیمات compiler برای بهینه‌سازی
+  // تنظیمات compiler
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // تنظیمات experimental برای performance
-  experimental: {
-    optimizeCss: true,
-    scrollRestoration: true,
-  },
-
-  // headers برای امنیت و performance
+  // headers برای امنیت
   async headers() {
     return [
       {
@@ -35,27 +26,10 @@ const nextConfig = {
             value: 'nosniff'
           },
           {
-            key: 'X-Frame-Options',
+            key: 'X-Frame-Options', 
             value: 'DENY'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
           }
         ],
-      },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
-        ]
       }
     ]
   }
