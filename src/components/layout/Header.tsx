@@ -2,15 +2,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { personalData } from '@/data/personalData';
-// حذف useEffect و useState چون استفاده نمیشن
-// import { useState, useEffect } from 'react';
 
 export function Header() {
   const pathname = usePathname();
-  
-  // حذف stateهای theme چون استفاده نمیشن
-  // const [theme, setTheme] = useState('dark');
-  // const [showPicker, setShowPicker] = useState(false);
 
   const handleDownloadCV = () => {
     window.open('/naseri.pdf', '_blank');
@@ -30,8 +24,13 @@ export function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-3 cursor-pointer">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">CV</span>
+            {/* جایگزینی با عکس پروفایل */}
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
+              <img 
+                src="/profile.jpg" 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
