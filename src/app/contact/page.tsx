@@ -9,7 +9,7 @@ export default function Contact() {
             Get In Touch
           </h1>
           <p className="text-xl theme-text-muted">
-            Let's work together on your next project
+            Let&apos;s work together on your next project
           </p>
         </div>
 
