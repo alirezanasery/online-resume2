@@ -27,44 +27,10 @@ export function Header() {
     setShowPicker(false);
   };
 
-  // تابع بهبود یافته برای دانلود در موبایل
+  // تابع بهبود یافته برای دانلود در موبایل و دسکتاپ
   const handleDownloadCV = () => {
-    // روش ۱: استفاده از window.open برای موبایل
-    if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
-      window.open('/naseri.pdf', '_blank');
-      return;
-    }
-
-    // روش ۲: برای دسکتاپ
-    const link = document.createElement('a');
-    link.href = '/naseri.pdf';
-    link.download = 'naseri.pdf';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    
-    setTimeout(() => {
-      document.body.removeChild(link);
-    }, 100);
-  };
-
-  // تابع جایگزین برای تست
-  const handleDownloadMobile = () => {
-    // بهترین روش برای موبایل - باز کردن در تب جدید
-    const pdfUrl = '/naseri.pdf';
-    
-    // ایجاد لینک موقت
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.target = '_blank'; // مهم برای موبایل
-    link.rel = 'noopener noreferrer';
-    
-    // برای iOS بهتر عمل میکنه
-    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-      window.open(pdfUrl, '_blank');
-    } else {
-      link.click();
-    }
+    // بهترین روش برای همه دستگاه‌ها - باز کردن در تب جدید
+    window.open('/naseri.pdf', '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => {
@@ -181,9 +147,9 @@ export function Header() {
               )}
             </div>
 
-            {/* دکمه دانلود با تابع بهبود یافته */}
+            {/* دکمه دانلود با تابع اصلی */}
             <button 
-              onClick={handleDownloadMobile} // استفاده از تابع بهبود یافته
+              onClick={handleDownloadCV}
               className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all whitespace-nowrap font-medium cursor-pointer hover:shadow-lg transform hover:scale-105 text-sm md:text-base"
             >
               📄 Download CV
