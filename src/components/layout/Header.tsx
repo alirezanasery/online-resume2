@@ -27,7 +27,46 @@ export function Header() {
     setShowPicker(false);
   };
 
-  // برای حل hydration mismatch
+  // تابع بهبود یافته برای دانلود در موبایل
+  const handleDownloadCV = () => {
+    // روش ۱: استفاده از window.open برای موبایل
+    if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
+      window.open('/naseri.pdf', '_blank');
+      return;
+    }
+
+    // روش ۲: برای دسکتاپ
+    const link = document.createElement('a');
+    link.href = '/naseri.pdf';
+    link.download = 'naseri.pdf';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    
+    setTimeout(() => {
+      document.body.removeChild(link);
+    }, 100);
+  };
+
+  // تابع جایگزین برای تست
+  const handleDownloadMobile = () => {
+    // بهترین روش برای موبایل - باز کردن در تب جدید
+    const pdfUrl = '/naseri.pdf';
+    
+    // ایجاد لینک موقت
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.target = '_blank'; // مهم برای موبایل
+    link.rel = 'noopener noreferrer';
+    
+    // برای iOS بهتر عمل میکنه
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      window.open(pdfUrl, '_blank');
+    } else {
+      link.click();
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
     const savedTheme = localStorage.getItem('theme') as Theme;
@@ -40,18 +79,6 @@ export function Header() {
     }
   }, [themes]);
 
-  const handleDownloadCV = () => {
-    const link = document.createElement('a');
-    link.href = '/naseri.pdf';
-    link.download = 'naseri.pdf';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-      document.body.removeChild(link);
-    }, 100);
-  };
-
   const navItems = [
     { href: '/', label: 'Home', icon: '🏠' },
     { href: '/about', label: 'About', icon: '👤' },
@@ -61,7 +88,6 @@ export function Header() {
     { href: '/contact', label: 'Contact', icon: '📞' },
   ];
 
-  // جلوگیری از hydration mismatch
   if (!mounted) {
     return (
       <header className="theme-card/90 backdrop-blur-lg border-b border-theme sticky top-0 z-50">
@@ -84,7 +110,6 @@ export function Header() {
     <header className="theme-card/90 backdrop-blur-lg border-b border-theme sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          {/* لوگو با عکس پروفایل */}
           <Link 
             href="/" 
             className="flex items-center space-x-3 flex-shrink-0 mr-4 cursor-pointer group"
@@ -109,7 +134,6 @@ export function Header() {
             </div>
           </Link>
 
-          {/* منوی اصلی */}
           <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-1 justify-center mx-4">
             {navItems.map((item) => (
               <Link
@@ -127,9 +151,7 @@ export function Header() {
             ))}
           </div>
 
-          {/* سمت چپ - تم و دانلود */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            {/* انتخاب تم */}
             <div className="relative">
               <button
                 onClick={() => setShowPicker(!showPicker)}
@@ -159,17 +181,16 @@ export function Header() {
               )}
             </div>
 
-            {/* دکمه دانلود */}
+            {/* دکمه دانلود با تابع بهبود یافته */}
             <button 
-              onClick={handleDownloadCV}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all whitespace-nowrap font-medium cursor-pointer hover:shadow-lg transform hover:scale-105"
+              onClick={handleDownloadMobile} // استفاده از تابع بهبود یافته
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all whitespace-nowrap font-medium cursor-pointer hover:shadow-lg transform hover:scale-105 text-sm md:text-base"
             >
               📄 Download CV
             </button>
           </div>
         </div>
 
-        {/* منوی موبایل */}
         <div className="md:hidden mt-4">
           <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
             {navItems.map((item) => (
