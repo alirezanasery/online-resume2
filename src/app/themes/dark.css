@@ -1,0 +1,29 @@
+/* تم دارک */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-card: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --accent-color: #3b82f6;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .bg-primary { background-color: var(--bg-primary); }
+html[data-theme="dark"] .bg-secondary { background-color: var(--bg-secondary); }
+html[data-theme="dark"] .bg-card { background-color: var(--bg-card); }
+
+html[data-theme="dark"] .text-primary { color: var(--text-primary); }
+html[data-theme="dark"] .text-secondary { color: var(--text-secondary); }
+html[data-theme="dark"] .text-muted { color: var(--text-muted); }
+
+html[data-theme="dark"] .border-theme { border-color: var(--border-color); }
+html[data-theme="dark"] .accent-color { color: var(--accent-color); }

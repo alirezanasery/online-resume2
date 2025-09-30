@@ -1,0 +1,29 @@
+/* تم آبی */
+html[data-theme="blue"] {
+  color-scheme: dark;
+  
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --accent-color: #60a5fa;
+}
+
+html[data-theme="blue"] body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html[data-theme="blue"] .bg-primary { background-color: var(--bg-primary); }
+html[data-theme="blue"] .bg-secondary { background-color: var(--bg-secondary); }
+html[data-theme="blue"] .bg-card { background-color: var(--bg-card); }
+
+html[data-theme="blue"] .text-primary { color: var(--text-primary); }
+html[data-theme="blue"] .text-secondary { color: var(--text-secondary); }
+html[data-theme="blue"] .text-muted { color: var(--text-muted); }
+
+html[data-theme="blue"] .border-theme { border-color: var(--border-color); }
+html[data-theme="blue"] .accent-color { color: var(--accent-color); }
