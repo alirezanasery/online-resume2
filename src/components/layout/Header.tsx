@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { personalData } from '@/data/personalData';
 import { useState, useEffect, useMemo } from 'react';
@@ -10,6 +11,7 @@ export function Header() {
   const pathname = usePathname();
   const [theme, setTheme] = useState<Theme>('dark');
   const [showPicker, setShowPicker] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const themes = useMemo(() => [
     { id: 'dark' as Theme, name: 'Dark', icon: '🌙' },
@@ -25,7 +27,9 @@ export function Header() {
     setShowPicker(false);
   };
 
+  // برای حل hydration mismatch
   useEffect(() => {
+    setMounted(true);
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme && themes.some(t => t.id === savedTheme)) {
       setTheme(savedTheme);
@@ -37,7 +41,6 @@ export function Header() {
   }, [themes]);
 
   const handleDownloadCV = () => {
-    // روش بهینه‌تر برای دانلود
     const link = document.createElement('a');
     link.href = '/naseri.pdf';
     link.download = 'naseri.pdf';
@@ -58,6 +61,25 @@ export function Header() {
     { href: '/contact', label: 'Contact', icon: '📞' },
   ];
 
+  // جلوگیری از hydration mismatch
+  if (!mounted) {
+    return (
+      <header className="theme-card/90 backdrop-blur-lg border-b border-theme sticky top-0 z-50">
+        <nav className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3 flex-shrink-0 mr-4">
+              <div className="w-10 h-10 bg-gray-300 rounded-full animate-pulse"></div>
+              <div className="hidden sm:block">
+                <div className="h-6 w-32 bg-gray-300 rounded animate-pulse mb-2"></div>
+                <div className="h-4 w-24 bg-gray-300 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+
   return (
     <header className="theme-card/90 backdrop-blur-lg border-b border-theme sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-4">
@@ -65,17 +87,20 @@ export function Header() {
           {/* لوگو با عکس پروفایل */}
           <Link 
             href="/" 
-            className="flex items-center space-x-3 flex-shrink-0 mr-4 cursor-pointer" // cursor-pointer اضافه شد
+            className="flex items-center space-x-3 flex-shrink-0 mr-4 cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-gray-300 dark:border-gray-600">
-              <img 
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-gray-300 dark:border-gray-600 group-hover:border-blue-500 transition-colors">
+              <Image 
                 src="/profile.jpg" 
-                alt="Profile" 
-                className="w-full h-full object-cover"
+                alt={`${personalData.name} Profile`}
+                width={40}
+                height={40}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                priority
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold theme-text">
+              <h1 className="text-xl font-bold theme-text group-hover:text-blue-500 transition-colors">
                 {personalData.name}
               </h1>
               <p className="text-sm theme-text-muted">
@@ -93,10 +118,10 @@ export function Header() {
                 className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-lg transition-all duration-200 text-sm lg:text-base whitespace-nowrap min-w-fit cursor-pointer ${
                   pathname === item.href
                     ? 'bg-blue-600 text-white shadow-sm'
-                    : 'theme-text-muted hover:bg-gray-500 hover:bg-opacity-20'
+                    : 'theme-text-muted hover:bg-gray-500 hover:bg-opacity-20 hover:text-blue-500'
                 }`}
               >
-                <span>{item.icon}</span>
+                <span className="text-base">{item.icon}</span>
                 <span>{item.label}</span>
               </Link>
             ))}
@@ -108,14 +133,14 @@ export function Header() {
             <div className="relative">
               <button
                 onClick={() => setShowPicker(!showPicker)}
-                className="p-2 rounded-lg bg-gray-500 bg-opacity-20 hover:bg-opacity-30 transition-colors theme-text cursor-pointer" // cursor-pointer اضافه شد
+                className="p-2 rounded-lg bg-gray-500 bg-opacity-20 hover:bg-opacity-30 transition-colors theme-text cursor-pointer hover:text-blue-500"
                 aria-label="Select theme"
               >
                 🎨
               </button>
 
               {showPicker && (
-                <div className="absolute right-0 top-12 theme-card border border-theme rounded-lg shadow-lg p-2 min-w-32 z-50">
+                <div className="absolute right-0 top-12 theme-card border border-theme rounded-lg shadow-lg p-2 min-w-32 z-50 backdrop-blur-lg">
                   {themes.map((t) => (
                     <button
                       key={t.id}
@@ -137,7 +162,7 @@ export function Header() {
             {/* دکمه دانلود */}
             <button 
               onClick={handleDownloadCV}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all whitespace-nowrap font-medium cursor-pointer" // cursor-pointer اضافه شد
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all whitespace-nowrap font-medium cursor-pointer hover:shadow-lg transform hover:scale-105"
             >
               📄 Download CV
             </button>
@@ -154,7 +179,7 @@ export function Header() {
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
                   pathname === item.href
                     ? 'bg-blue-600 text-white'
-                    : 'theme-card theme-text-muted'
+                    : 'theme-card theme-text-muted hover:bg-gray-500 hover:bg-opacity-20'
                 }`}
               >
                 <span>{item.icon}</span>
