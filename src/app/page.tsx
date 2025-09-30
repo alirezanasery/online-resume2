@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { personalData } from '@/data/personalData';
 
 export default function Home() {
@@ -7,12 +8,15 @@ export default function Home() {
       <section className="theme-bg">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center max-w-4xl mx-auto">
-            {/* جایگزینی آواتار با عکس پروفایل */}
+            {/* استفاده از Image به جای img */}
             <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg">
-              <img 
+              <Image 
                 src="/profile.jpg" 
                 alt="Profile" 
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
+                priority // برای LCP بهتر
               />
             </div>
             
