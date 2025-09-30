@@ -1,20 +1,19 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { personalData } from '@/data/personalData';
-import { useState, useEffect } from 'react';
+// حذف useEffect و useState چون استفاده نمیشن
+// import { useState, useEffect } from 'react';
 
 export function Header() {
-  const [theme, setTheme] = useState('dark');
+  const pathname = usePathname();
   
-  // تابع ساده‌تر برای دانلود
+  // حذف stateهای theme چون استفاده نمیشن
+  // const [theme, setTheme] = useState('dark');
+  // const [showPicker, setShowPicker] = useState(false);
+
   const handleDownloadCV = () => {
-    // روش کاملاً compatible
-    const link = document.createElement('a');
-    link.href = '/naseri.pdf';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.open('/naseri.pdf', '_blank');
   };
 
   const navItems = [
@@ -27,88 +26,65 @@ export function Header() {
   ];
 
   return (
-    <header style={{ 
-      backgroundColor: 'white', 
-      borderBottom: '1px solid #e5e7eb',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50
-    }}>
-      <nav style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        padding: '1rem'
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center'
-        }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <span style={{ color: 'white', fontWeight: 'bold' }}>CV</span>
+    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          <Link href="/" className="flex items-center space-x-3 cursor-pointer">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-lg">CV</span>
             </div>
-            <div style={{ display: window.innerWidth > 640 ? 'block' : 'none' }}>
-              <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937', margin: 0 }}>
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 {personalData.name}
               </h1>
-              <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: 0 }}>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {personalData.title}
               </p>
             </div>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  pathname === item.href
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+              >
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
             <button 
               onClick={handleDownloadCV}
-              style={{
-                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                color: 'white',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all cursor-pointer font-medium"
             >
-              Download CV
+              📄 Download CV
             </button>
           </div>
         </div>
 
-        {/* منوی موبایل ساده */}
-        <div style={{ 
-          display: 'flex', 
-          overflowX: 'auto', 
-          gap: '8px', 
-          marginTop: '1rem',
-          paddingBottom: '8px'
-        }}>
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              style={{
-                padding: '8px 12px',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                whiteSpace: 'nowrap',
-                backgroundColor: '#f3f4f6',
-                color: '#374151',
-                textDecoration: 'none'
-              }}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="md:hidden mt-4">
+          <div className="flex overflow-x-auto gap-2 pb-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm whitespace-nowrap flex-shrink-0 ${
+                  pathname === item.href
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </nav>
     </header>
