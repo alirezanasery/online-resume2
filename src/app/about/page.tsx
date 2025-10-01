@@ -1,10 +1,26 @@
+'use client'; // این خط رو اضافه کن
 import { personalData } from '@/data/personalData';
 
 export default function About() {
+  // تابع دانلود رو اضافه کن
+  const handleDownloadCV = () => {
+    window.open('/naseri.pdf', '_blank');
+  };
+
   return (
     <div className="min-h-screen theme-bg py-8">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
+          {/* اضافه کردن عکس پروفایل */}
+          <div className="flex justify-center mb-6">
+            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg">
+              <img 
+                src="/profile.jpg" 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold theme-text mb-4">
             About Me
           </h1>
@@ -24,7 +40,7 @@ export default function About() {
               </p>
               
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme">
+                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme cursor-pointer">
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                     <span className="text-2xl">📧</span>
                   </div>
@@ -34,7 +50,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme">
+                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme cursor-pointer">
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                     <span className="text-2xl">📱</span>
                   </div>
@@ -44,7 +60,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme">
+                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme cursor-pointer">
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
                     <span className="text-2xl">📍</span>
                   </div>
@@ -54,7 +70,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme">
+                <div className="flex items-center space-x-3 p-4 theme-card rounded-lg border border-theme cursor-pointer">
                   <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
                     <span className="text-2xl">💼</span>
                   </div>
@@ -116,7 +132,11 @@ export default function About() {
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white text-center">
               <h3 className="font-bold text-lg mb-2">Download Resume</h3>
               <p className="text-blue-100 mb-4">Get my complete CV in PDF format</p>
-              <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              {/* دکمه درست شده */}
+              <button 
+                onClick={handleDownloadCV}
+                className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
+              >
                 Download PDF
               </button>
             </div>
